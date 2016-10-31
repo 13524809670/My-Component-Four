@@ -1,0 +1,59 @@
+.box{
+	width: 100%; 
+	height: 550px; 
+	position: relative;
+}
+.imgList{
+	height: 550px; 
+	position: relative;
+}
+.imgList li{
+	position: absolute; 
+	height: 550px; 
+	left: 0; top: 0; 
+	display: none; 
+	width: 100%;
+	background-position: center top;
+	background-repeat: no-repeat;
+	}
+.imgList li a{
+	display: block; 
+	width: 100%; 
+	height: 100%;
+}
+.btnList{
+	width: 120px; 
+	height: 12px; 
+	position: absolute; 
+	left: 50%; 
+	margin-left: -60px;
+	bottom: 15px; 
+}
+.btnList li{
+	width: 12px; 
+	height: 12px; 
+	background: url(../../images/nextArrow.png) -17px 0;
+	float: left; 
+	margin-right: 24px; 
+	cursor: pointer;
+}
+.btnList li.current{background-position: 0 0;}
+.leftBtn,.rightBtn{
+	width: 35px; 
+	height: 71px; 
+	position: absolute; 
+	top: 50%; 
+	margin-top: -35px;
+	background: url(../../images/prevArrow.png) 0 0; 
+	cursor: pointer;
+	z-index: 99;
+}
+.leftBtn{
+	left: 50%; 
+	margin-left: -600px;
+}
+.rightBtn{
+	left: 50%; 
+	background-position: -90px 0; 
+	margin-left: 600px;
+}

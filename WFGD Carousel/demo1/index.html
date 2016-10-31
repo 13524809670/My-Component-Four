@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>无缝滚动</title>
+	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<link rel="stylesheet" href="../public.css" />
+	<style type="text/css">
+	    .box{
+	    	width: 600px; 
+	    	height: 200px; 
+	    	border: 1px solid #000; 
+	    	margin: 30px auto 0;
+	        overflow: hidden;
+	    }
+	    .list{
+	    	width: 1800px; 
+	    	height: 200px; 
+	    	position: relative; 
+	    	top: 0; left: 0; 
+	    	background: #000;
+	    }
+	    .list li{
+	    	width: 300px; 
+	    	height: 200px; 
+	    	float: left;
+	    }
+	    .btnBox{
+	    	width: 600px; 
+	    	height: 45px; 
+	    	line-height: 45px; 
+	    	text-align: center;
+	        margin: 0 auto;
+	    }
+	    .btnBox a{
+	    	font-size:28px; 
+	    	text-decoration: none;
+	    	color:#000;
+	    }
+	    .list img{
+	    	width:300px;
+	    	height: 200px;
+	    	display: block;
+	    }
+	    h1{
+	    	font-size: 40px;
+	    	text-align: center;
+	    	margin-top:200px;
+	    }
+	</style>
+</head>
+<body>
+	<h1>无缝滚动</h1>
+	<div class="box">
+	    <ul class="list">
+	        <li><a href="javascript:;"><img src="../images/koi.jpg" /></a></li>
+	        <li><a href="javascript:;"><img src="../images/life.jpg" /></a></li>
+	        <li><a href="javascript:;"><img src="../images/peacock.jpg" /></a></li>
+	        <li><a href="javascript:;"><img src="../images/guangg3.jpg" /></a></li>
+	    </ul>
+	</div>
+	<div class="btnBox">
+	    <a href="javascript:;" class="leftBtn"> << </a>　　
+	    <a href="javascript:;" class="rightBtn"> >> </a>
+	</div>
+
+
+	<script type="text/javascript">
+		//自定义一个变量，用来模拟list的left值
+		var myLeft=0;
+		//用JQ克隆前两个LI
+		var myaLi=$('.list li:lt(2)').clone(true);
+		//将克隆出来的节点插入到list的最末尾
+		$('.list').append(myaLi);
+		var timer;
+		//定义一个方向变量，用来帮助我们知道当前UL的运动方向
+		var fangXiang='left';
+
+		//往左走的功能
+		var leftFn=function(){
+		    //调用左功能，将方向和该功能实现的方向保持一致
+		    fangXiang='left';
+		    //每次将left进行减减
+		    myLeft=myLeft-3;
+		    //如果myLeft<=-1200，就代表一个轮回走完了；
+		    //就要让轮回回到最开始的地方：0
+		    if(myLeft<=-1200){
+		        myLeft=0;
+		    }
+		    //将这个不断改变的myLeft变量和list身上的left值进行同步
+		    $('.list').css('left',myLeft);
+		}
+		//往右走的功能
+		var rightFn=function(){
+		    //调用右功能，将方向和该功能实现的方向保持一致
+		    fangXiang='right';
+		    //每次将left进行加加，后面的加值或者减值推荐保持一致
+		    myLeft=myLeft+3;
+		    //刚一开始就露出了马脚，所以需要回到轮回最末尾
+		    //left值是-1200
+		    if(myLeft>0){
+		        myLeft=-1200;
+		    }
+		    //将这个不断改变的myLeft变量和list身上的left值进行同步
+		    $('.list').css('left',myLeft);
+		}
+
+		//默认是往左走
+		timer=setInterval(leftFn,30);
+
+		//当单击右按钮时，让盒子往右走
+		$('.rightBtn').click(function(event) {
+		    clearInterval(timer);
+		    //先清除旧的定时器，再开启一个新定时器，这个定时器调用rightFn功能
+		    timer=setInterval(rightFn, 30);
+		});
+
+		//当单击左按钮时，让盒子往左走
+		$('.leftBtn').click(function(event) {
+		    clearInterval(timer);
+		    //先清除旧的定时器，再开启一个新定时器，这个定时器调用leftFn功能
+		    timer=setInterval(leftFn, 30);
+		});
+
+		$('.box').hover(function() {
+		    //鼠标移上box身上时，让定时器停止
+		    clearInterval(timer);
+		}, function() {
+		    clearInterval(timer);
+		    //当鼠标离开时，进行方向的判断，如果当前这个方向是left，重启时需要调用leftFn；
+		    //如果当前这个方向是right，重启时需要调用rightFn
+		    if(fangXiang=='left'){
+		        timer=setInterval(leftFn, 30);
+		    }else{
+		        timer=setInterval(rightFn, 30);
+		    }
+
+		});
+
+		$('.list li').hover(function() {
+		    //让当前这个LI的小伙伴们的透明度降低
+		    $(this).siblings().stop().fadeTo(500,.4);
+		}, function() {
+		    //离开时，将所有LI的透明度还原
+		    $('.list li').stop().fadeTo(500,1);
+		});
+	</script>
+</body>
+</html>
